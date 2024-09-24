@@ -4,11 +4,13 @@ import StokObat from "./Layaouts/StokObat/StokObat";
 import Amprahan from "./Layaouts/Amprahan/Amprahan";
 import DetailAmprahan from "./Layaouts/Amprahan/DetailAmprahan";
 import LayoutHome from "./Home/LayoutHome";
+import Stok from "./DaftarBarang/DaftarBarang";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/stok" element={<StokObat />} />
+      <Route path="/barang" element={<Stok />} />
       <Route path="/" element={<LayoutHome />} />
       <Route path="/detail/:id/:dari" element={<DetailAmprahan />} />
       <Route path="/amprahan" element={<Amprahan />} />

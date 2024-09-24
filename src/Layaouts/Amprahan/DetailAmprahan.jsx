@@ -8,6 +8,7 @@ import TTD from "./TTD";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale untuk Bahasa Indonesia
 import LoadingGlobal from "../../components/Loading";
+import Navbar from "../../components/navbar";
 
 const DetailAmprahan = () => {
   const { id } = useParams();
@@ -99,82 +100,85 @@ const DetailAmprahan = () => {
   }
 
   return (
-    <div className="flex justify-center p-20">
-      <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
-        <button
-          onClick={handlePrint}
-          className=" px-4 py-2 w-full mb-8  bg-gray-800 text-white rounded hover:bg-gray-900"
-        >
-          Print
-        </button>
-
-        {data.length > 0 ? (
-          <div
-            ref={componentRef}
-            className="overflow-x-auto  flex justify-center bg-white "
+    <>
+      <Navbar />
+      <div className="flex justify-center p-20">
+        <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
+          <button
+            onClick={handlePrint}
+            className=" px-4 py-2 w-full mb-8  bg-gray-800 text-white rounded hover:bg-gray-900"
           >
-            <div className="w-[90%] ">
-              <KOP />
-              <div className="mb-8 -mt-4">
-                <h2 className="text-base text-center font-bold text-gray-800 mb-2">
-                  DATA PERMINTAAN OBAT/ALKES/BHP MEDIS
-                </h2>
-                <h2 className="text-base text-center font-bold text-gray-800 mb-2">
-                  GUDANG FARMASI
-                </h2>
-                <h2 className="text-base text-center font-bold text-gray-800 mb-4">
-                  {formatDate(data[0].tanggal)}
-                </h2>
-              </div>
-              <Header data={data[0]} />
-              <table className="min-w-full divide-y divide-gray-200 border border-black ">
-                <thead className="bg-gray-50 ">
-                  <tr className=" text-center ">
-                    <th className="w-20 py-2   text-xs border border-black font-bold text-black uppercase tracking-wider">
-                      {" "}
-                      No{" "}
-                    </th>
-                    <th className="w-72 py-2  text-xs border   border-black font-bold text-black ppercase tracking-wider">
-                      Nama Barang
-                    </th>
-                    <th className="w-20  py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
-                      Jumlah
-                    </th>
+            Print
+          </button>
 
-                    <th className="w-52 py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
-                      Kode Satuan
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200 border border-black">
-                  {data.map((item, index) => (
-                    <tr key={item.kode_brng} className=" text-center">
-                      <td className="px-6  text-xs border border-black text-gray-500">
+          {data.length > 0 ? (
+            <div
+              ref={componentRef}
+              className="overflow-x-auto  flex justify-center bg-white "
+            >
+              <div className="w-[90%] ">
+                <KOP />
+                <div className="mb-8 -mt-4">
+                  <h2 className="text-base text-center font-bold text-gray-800 mb-2">
+                    DATA PERMINTAAN OBAT/ALKES/BHP MEDIS
+                  </h2>
+                  <h2 className="text-base text-center font-bold text-gray-800 mb-2">
+                    GUDANG FARMASI
+                  </h2>
+                  <h2 className="text-base text-center font-bold text-gray-800 mb-4">
+                    {formatDate(data[0].tanggal)}
+                  </h2>
+                </div>
+                <Header data={data[0]} />
+                <table className="min-w-full divide-y  divide-gray-200 border border-black ">
+                  <thead className="bg-gray-50 ">
+                    <tr className=" text-center ">
+                      <th className="w-20 py-2   text-xs border border-black font-bold text-black uppercase tracking-wider">
                         {" "}
-                        {index + 1}
-                      </td>
-                      <td className="px-6  text-xs border border-black text-gray-500">
-                        {item.nama_brng}
-                      </td>
-                      <td className="px-6   text-xs border border-black text-gray-500">
-                        {item.jumlah.toLocaleString("id-ID")}
-                      </td>
+                        No{" "}
+                      </th>
+                      <th className="w-72 py-2  text-xs border   border-black font-bold text-black ppercase tracking-wider">
+                        Nama Barang
+                      </th>
+                      <th className="w-20  py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
+                        Jumlah
+                      </th>
 
-                      <td className="px-6   text-xs border border-black text-gray-500">
-                        {item.kode_sat}
-                      </td>
+                      <th className="w-52 py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
+                        Kode Satuan
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <TTD data={data[0]} />
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200 border border-black">
+                    {data.map((item, index) => (
+                      <tr key={item.kode_brng} className=" text-center">
+                        <td className="px-6  text-xs border border-black text-gray-500">
+                          {" "}
+                          {index + 1}
+                        </td>
+                        <td className="px-6  text-xs border border-black text-gray-500">
+                          {item.nama_brng}
+                        </td>
+                        <td className="px-6   text-xs border border-black text-gray-500">
+                          {item.jumlah.toLocaleString("id-ID")}
+                        </td>
+
+                        <td className="px-6   text-xs border border-black text-gray-500">
+                          {item.kode_sat}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <TTD data={data[0]} />
+              </div>
             </div>
-          </div>
-        ) : (
-          <p className="text-gray-500">No data available.</p>
-        )}
+          ) : (
+            <p className="text-gray-500">No data available.</p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
