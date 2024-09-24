@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { getDataAmprahan } from "../../service/GetDataAmprahan";
-import { format } from "date-fns"; 
+import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar";
+import LoadingGlobal from "../../components/Loading";
 
 const Amprahan = () => {
-
   const today = format(new Date(), "yyyy-MM-dd");
-  const [selectedDate, setSelectedDate] = useState(today); 
+  const [selectedDate, setSelectedDate] = useState(today);
   const [data, setData] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const fetchData = async (date) => {
+    setLoading(true);
     try {
       const response = await getDataAmprahan(date);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,12 +42,14 @@ const Amprahan = () => {
     navigate(`/detail/${id}/${formattedDari}?nama=${formatNama}`);
   };
 
+  if (loading) {
+    return <LoadingGlobal />;
+  }
+
   return (
     <>
       <Navbar />
       <div className="p-6 bg-gray-100 min-h-screen">
-     
-
         <div className="mb-6 flex items-center gap-2 justify-start">
           <label
             htmlFor="date"
@@ -62,7 +67,7 @@ const Amprahan = () => {
           />
         </div>
 
-     <div className="bg-white shadow-md rounded-lg px-4 text-sm">
+        <div className="bg-white shadow-md rounded-lg px-4 text-sm">
           {data.length > 0 ? (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

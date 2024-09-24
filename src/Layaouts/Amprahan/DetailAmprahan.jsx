@@ -7,6 +7,7 @@ import Header from "./Header";
 import TTD from "./TTD";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale untuk Bahasa Indonesia
+import LoadingGlobal from "../../components/Loading";
 
 const DetailAmprahan = () => {
   const { id } = useParams();
@@ -19,18 +20,20 @@ const DetailAmprahan = () => {
     const fetchData = async () => {
       try {
         const response = await getDetailAmprahan({ no_permintaan: id });
-    
-       
-        const sortedData = response.data.sort((a, b) => a.nama_brng.localeCompare(b.nama_brng));
-    
-        setData(sortedData); 
+
+        const sortedData = response.data.sort((a, b) =>
+          a.nama_brng.localeCompare(b.nama_brng)
+        );
+
+        setData(sortedData);
         setLoading(false);
       } catch (error) {
         setError("Error fetching data");
         setLoading(false);
+      } finally {
+        setLoading(false);
       }
     };
-    
 
     fetchData();
   }, [id]);
@@ -86,7 +89,7 @@ const DetailAmprahan = () => {
   };
 
   if (loading) {
-    return <div className="p-6 bg-gray-100 min-h-screen">Loading...</div>;
+    return <LoadingGlobal />;
   }
 
   if (error) {
@@ -98,8 +101,6 @@ const DetailAmprahan = () => {
   return (
     <div className="flex justify-center">
       <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
-       
-
         <button
           onClick={handlePrint}
           className=" px-4 py-2 w-full mb-8  bg-blue-500 text-white rounded hover:bg-blue-600"

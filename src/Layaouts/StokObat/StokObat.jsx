@@ -2,16 +2,24 @@ import React, { useEffect, useState, useRef } from "react";
 
 import { useReactToPrint } from "react-to-print";
 import { getDataStokOpname } from "../../service/GetDataStokOpname";
+import LoadingGlobal from "../../components/Loading";
 
 const StokObat = () => {
   const [data, setData] = useState([]);
   const componentRef = useRef();
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getDataStokOpname();
-      // setData(result.data.slice(0, 500));
-      setData(result.data);
+      try {
+        setLoading(true);
+        const result = await getDataStokOpname();
+        // setData(result.data.slice(0, 500));
+        setData(result.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
@@ -50,10 +58,12 @@ const StokObat = () => {
     const d = new Date(date);
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   };
+  if (loading) {
+    return <LoadingGlobal />;
+  }
 
   return (
     <div className="p-6 w-full mx-auto">
-      
       <div>
         <button
           className="bg-gray-800 w-full mb-4  text-white font-bold py-2 px-4 rounded"
@@ -67,7 +77,6 @@ const StokObat = () => {
         <div className="overflow-x-auto" ref={componentRef}>
           <div className="mt-4 ">
             <div className="flex justify-center">
-            
               <ul className="list-disc ml-6 text-gray-700">
                 <li className="text-red-500">
                   <span className="px-2 py-1 font-bold">Stok Habis</span>
