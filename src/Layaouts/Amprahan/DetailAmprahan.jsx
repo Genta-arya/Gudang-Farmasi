@@ -99,11 +99,11 @@ const DetailAmprahan = () => {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center p-20">
       <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
         <button
           onClick={handlePrint}
-          className=" px-4 py-2 w-full mb-8  bg-blue-500 text-white rounded hover:bg-blue-600"
+          className=" px-4 py-2 w-full mb-8  bg-gray-800 text-white rounded hover:bg-gray-900"
         >
           Print
         </button>

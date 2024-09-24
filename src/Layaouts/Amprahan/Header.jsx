@@ -3,7 +3,7 @@ import React from 'react';
 const Header = ({ data }) => {
    
   return (
-    <div className=" bg-white rounded-lg mb-8 text-sm -mt-4">
+    <div className=" bg-white rounded-lg mb-4 text-sm -mt-4">
     
       <div className="flex flex-col gap-1 ">
         <div className="mb-2 md:mb-0 flex gap-12">
