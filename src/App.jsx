@@ -5,6 +5,7 @@ import Amprahan from "./Layaouts/Amprahan/Amprahan";
 import DetailAmprahan from "./Layaouts/Amprahan/DetailAmprahan";
 import LayoutHome from "./Home/LayoutHome";
 import Stok from "./DaftarBarang/DaftarBarang";
+import Laporan from "./Layaouts/LaporanSO/Laporan";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/barang" element={<Stok />} />
       <Route path="/" element={<LayoutHome />} />
       <Route path="/detail/:id/:dari" element={<DetailAmprahan />} />
+      <Route path="/stok-keluar-bulanan" element={<Laporan />} />
       <Route path="/amprahan" element={<Amprahan />} />
       <Route
         path="*"

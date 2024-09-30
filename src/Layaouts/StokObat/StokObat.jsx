@@ -112,12 +112,7 @@ const StokObat = () => {
                     <th className="px-6  text-left  border border-black text-gray-600 text-xs  uppercase tracking-wider">
                       Stok
                     </th>
-                    <th className="px-6  text-left  border border-black text-gray-600 text-xs  uppercase tracking-wider">
-                      Isi Obat
-                    </th>
-                    <th className="px-6 text-left  border border-black text-gray-600 text-xs  uppercase tracking-wider">
-                      Real Stok
-                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -157,11 +152,10 @@ const StokObat = () => {
                           }}
                         >
                           {item.stok === 0
-                            ? "Stok Habis"
+                            ? "0"
                             : item.stok.toLocaleString()}
                         </td>
-                        <td className="px-6  border border-black whitespace-nowrap text-xs"></td>
-                        <td className="px-6  border border-black whitespace-nowrap text-xs"></td>
+             
                       </tr>
                     );
                   })}
