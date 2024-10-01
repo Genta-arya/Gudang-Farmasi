@@ -1,5 +1,5 @@
 import React from "react";
-import { FaBoxOpen, FaClipboardList, FaPrint } from "react-icons/fa";
+import { FaBoxOpen, FaClipboardList, FaPrint, FaSignOutAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const MenuList = () => {
@@ -10,7 +10,7 @@ const MenuList = () => {
       icon: <FaBoxOpen />,
     },
     {
-      path: "/stok-keluar-bulanan",
+      path: "/laporan/stokopname",
       name: "Stok Keluar Bulanan",
       icon: <FaBoxOpen />,
     },
@@ -23,6 +23,11 @@ const MenuList = () => {
       path: "/stok",
       name: "Cetak Stokopname",
       icon: <FaPrint />,
+    },
+    {
+      path: "/obatkeluar",
+      name: "Laporan Obat Keluar",
+      icon: <FaSignOutAlt />,
     },
   ];
 
