@@ -44,7 +44,7 @@ const DetailAmprahan = () => {
     pageStyle: `
       @media print {
         @page {
-          size:  ${data.length > 50 ? "F4 landscape" : "A4 portrait"};
+          size:  ${data.length > 26 ? "F4 landscape" : "A4 portrait"};
           marginTop: 10mm;
           
         }
