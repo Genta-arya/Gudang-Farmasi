@@ -148,6 +148,9 @@ const DetailAmprahan = () => {
                       <th className="w-52 py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
                         Kode Satuan
                       </th>
+                      <th className="w-52 py-2  text-xs border border-black font-bold text-black uppercase tracking-wider">
+
+                        Tersedia</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200 border border-black">
@@ -166,6 +169,10 @@ const DetailAmprahan = () => {
 
                         <td className="px-6   text-xs border border-black text-gray-500">
                           {item.kode_sat}
+                        </td>
+
+                        <td className="px-6   text-xs border border-black text-gray-500">
+                          {item.stok.toLocaleString("id-ID")}
                         </td>
                       </tr>
                     ))}
