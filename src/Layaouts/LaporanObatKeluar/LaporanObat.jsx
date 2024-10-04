@@ -218,11 +218,15 @@ const LaporanObat = () => {
     saveAs(blob, `Laporan_Obat_${date}.xlsx`);
   };
 
-  if (loading) return <LoadingGlobal />;
+  // if (loading) return <LoadingGlobal />;
 
   const filteredData = data.filter((item) =>
     item.nama_barang.toLowerCase().includes(searchTerm)
   );
+
+  const totalHargaTigaBulan = filteredData.reduce((total, item) => {
+    return total + item.harga_dasar * item.total_keluar * 3 * 1.2;
+  }, 0);
 
   return (
     <div className="container mx-auto p-4">
@@ -316,7 +320,9 @@ const LaporanObat = () => {
                 <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
                   Harga Dasar
                 </th>
-
+                <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
+                  Total Harga 3 bulan
+                </th>
                 <th className="py-2 print:py-2  px-4 border border-black  ">
                   Keterangan
                 </th>
@@ -363,12 +369,18 @@ const LaporanObat = () => {
                         <td className="py-2 print:py-2  px-4 border border-black">
                           {formatStok(item.total_keluar * 3 * 1.2)}
                         </td>
+
                         <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
                           {formattedExpireDate}
                         </td>
 
                         <td className="py-2 print:py-2 px-4 border border-black print:w-20">
                           {formatRupiah(item.harga_dasar)}
+                        </td>
+                        <td className="py-2 print:py-2 px-4 border border-black print:w-20">
+                          {formatRupiah(
+                            item.harga_dasar * (item.total_keluar * 3 * 1.2)
+                          )}
                         </td>
                         <td className="py-2 print:py-2 px-4 border border-black"></td>
                         <td className="py-2 print:py-2 px-4 border border-black print:hidden">
@@ -386,6 +398,14 @@ const LaporanObat = () => {
               )}
             </tbody>
           </table>
+          <div className="mt-4 text-center  p-1 border border-black rounded-md">
+            <div className="flex flex-col">
+              <p className="font-bold">BIAYA PERENCANAAN 3 BULAN: </p>
+              <span className="text-red-500 font-bold text-md">
+                {formatRupiah(totalHargaTigaBulan)}
+              </span>
+            </div>
+          </div>
 
           <TTDLaporan />
         </div>
