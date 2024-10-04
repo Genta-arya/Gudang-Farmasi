@@ -8,6 +8,13 @@ const KOPLaporan = () => {
     month: "long",
     year: "numeric",
   });
+
+  const romawiBulan = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
+  // Mengambil bulan saat ini (dimulai dari 0, jadi tambahkan 1)
+  const bulanSaatIni = new Date().getMonth();
+  const bulanRomawi = romawiBulan[bulanSaatIni];
+
   return (
     <>
       <div className="mb-8 bg-white w-full">
@@ -48,7 +55,7 @@ const KOPLaporan = () => {
                 :
                 <span className="ml-4 fontb-bold">
                   B/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ PENUNJANG-
-                  A.442.1/VII/2024
+                  A.442.1/{bulanRomawi}/2024
                 </span>
               </p>
             </div>
