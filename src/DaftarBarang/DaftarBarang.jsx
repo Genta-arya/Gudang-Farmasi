@@ -105,17 +105,20 @@ const Stok = () => {
                     <th className="px-6 text-center border border-black text-gray-600 text-xs uppercase tracking-wider">
                       No
                     </th>
-                    <th className="px-6 text-left border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
                       Nama Barang
                     </th>
-                    <th className="px-6 text-left border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
                       Expire
                     </th>
-                    <th className="px-6 text-left border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
                       PBF
                     </th>
-                    <th className="px-6 text-left border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6   border border-black text-gray-600 text-xs uppercase tracking-wider">
                       Stok
+                    </th>
+                    <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
+                      Harga 
                     </th>
                   </tr>
                 </thead>
@@ -137,7 +140,7 @@ const Stok = () => {
                         <td className="px-6 w-64 border border-black text-xs">
                           {item.nama_brng}
                         </td>
-                        <td className="px-6 border border-black whitespace-nowrap text-xs">
+                        <td className="px-6 w-20 border border-black whitespace-nowrap text-xs">
                           {formatDate(item.expire)}
                         </td>
                         <td className="px-6 w-52 py-2 border border-black text-xs">
@@ -154,6 +157,9 @@ const Stok = () => {
                           {item.stok === 0
                             ? "Stok Habis"
                             : item.stok.toLocaleString()}
+                        </td>
+                        <td className="px-6 w-52 py-2 border border-black text-xs">
+                          Rp.   {item.harga_jual.toLocaleString()}
                         </td>
                       </tr>
                     );
