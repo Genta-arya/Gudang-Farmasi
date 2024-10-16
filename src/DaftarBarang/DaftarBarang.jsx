@@ -102,10 +102,10 @@ const Stok = () => {
               <table className="bg-white border border-gray-200 rounded-lg shadow-md mt-8 print:mt-4 w-full">
                 <thead className="font-bold text-center">
                   <tr className="bg-gray-100 border-b font-bold text-xs text-center">
-                    <th className="px-6 text-center border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6 w-20 text-center border border-black text-gray-600 text-xs uppercase tracking-wider">
                       No
                     </th>
-                    <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
+                    <th className="px-6 w-fit  border border-black text-gray-600 text-xs uppercase tracking-wider">
                       Nama Barang
                     </th>
                     <th className="px-6  border border-black text-gray-600 text-xs uppercase tracking-wider">
@@ -128,22 +128,18 @@ const Stok = () => {
                     return (
                       <tr
                         key={item.kode_brng}
-                        className={`border-b text-center font-semibold ${
-                          isExpired
-                            ? "bg-yellow-200 print:text-yellow-500 text-black"
-                            : "bg-gray-100"
-                        } ${item.stok === 0 ? "bg-red-400 print:text-red-700" : ""}`}
+                        className={`border-b text-center font-semibold `}
                       >
                         <td className="px-6 text-center border border-black whitespace-nowrap text-xs">
                           {index + 1}
                         </td>
-                        <td className="px-6 w-64 border border-black text-xs">
+                        <td className="px-6 text-left w-fit  border border-black text-xs">
                           {item.nama_brng}
                         </td>
                         <td className="px-6 w-20 border border-black whitespace-nowrap text-xs">
                           {formatDate(item.expire)}
                         </td>
-                        <td className="px-6 w-52 py-2 border border-black text-xs">
+                        <td className="px-6  py-2 border border-black text-xs">
                           {item.nama_suplier}
                         </td>
                         <td
