@@ -103,7 +103,7 @@ const DetailAmprahan = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center p-20">
+      <div className="flex justify-center md:p-20">
         <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
           <button
             onClick={handlePrint}

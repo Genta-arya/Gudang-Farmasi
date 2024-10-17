@@ -67,7 +67,7 @@ const Amprahan = () => {
           />
         </div>
 
-        <div className="bg-white shadow-md rounded-lg px-4 text-sm">
+        <div className="bg-white shadow-md rounded-lg px-4 text-sm overflow-auto">
           {data.length > 0 ? (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

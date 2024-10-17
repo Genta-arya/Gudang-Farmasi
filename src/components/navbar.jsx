@@ -12,13 +12,13 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center text-sm">
         {location.pathname === "/" ? (
           <div className="text-xl font-bold">Gudang Farmasi</div>
         ) : (
           <button onClick={handleBackClick} className="flex items-center">
             <FaArrowLeft className="mr-4" /> {/* Icon arrow left */}
-            <span>Kembali</span>
+            <span className="">Kembali</span>
           </button>
         )}
       </div>

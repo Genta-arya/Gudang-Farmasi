@@ -68,7 +68,7 @@ const Stok = () => {
       <Navbar />
       <div className="p-6 w-full">
    
-        <div className="flex justify-between items-center mb-4 px-8">
+        <div className="flex justify-between items-center mb-4 md:px-8 lg:px-8 px-0 lg:text-base md:text-base text-xs">
      
           <div className="flex items-center bg-white rounded-md shadow-md p-2">
             <FaSearch className="text-gray-400 mr-2" />
@@ -82,12 +82,12 @@ const Stok = () => {
           </div>
 
           {/* Filter Select */}
-          <div className="flex items-center bg-white rounded-md shadow-md p-2">
+          <div className="flex items-center  bg-white  rounded-md shadow-md p-2">
             <FaFilter className="text-gray-400 mr-2" />
             <select
               value={filter}
               onChange={handleFilterChange}
-              className="outline-none text-gray-600 bg-white"
+              className="outline-none  w-full text-gray-600 bg-white"
             >
               <option value="">Semua</option>
               <option value="expired">Obat Expired</option>
@@ -97,8 +97,8 @@ const Stok = () => {
         </div>
 
         {filteredData.length > 0 ? (
-          <div className="overflow-x-auto w-full">
-            <div className="flex justify-center">
+          <div className="overflow-auto w-full ">
+            <div className="">
               <table className="bg-white border border-gray-200 rounded-lg shadow-md mt-8 print:mt-4 w-full">
                 <thead className="font-bold text-center">
                   <tr className="bg-gray-100 border-b font-bold text-xs text-center">

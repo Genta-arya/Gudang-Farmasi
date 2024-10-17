@@ -34,15 +34,18 @@ const MenuList = () => {
   return (
     <div className="h-screen flex items-center justify-center">
       <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-[90%]">
-        <ul className="grid grid-cols-2 gap-6">
+        <ul className="grid grid-cols-2 gap-6 md:grid-cols-2">
           {menu.map((item, index) => (
             <Link
               to={item.path}
               key={index}
-              className="flex flex-col items-center justify-center p-4 bg-gray-700 rounded-md hover:bg-gray-600 transition-colors"
+              className={`flex flex-col items-center justify-center p-4 bg-gray-700 rounded-md 
+                hover:bg-gray-600 transition-colors ${
+                  index === menu.length - 1 && menu.length % 2 !== 0 ? "col-span-2" : ""
+                }`}
             >
-              <span className="text-3xl mb-2">{item.icon}</span>
-              <span className="text-lg hover:text-gray-400">{item.name}</span>
+              <span className="md:text-3xl lg:text-3xl text-sm mb-2">{item.icon}</span>
+              <span className="md:text-lg lg:text-lg text-sm hover:text-gray-400">{item.name}</span>
             </Link>
           ))}
         </ul>
