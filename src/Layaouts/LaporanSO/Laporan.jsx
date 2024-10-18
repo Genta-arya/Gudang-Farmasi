@@ -2,35 +2,35 @@ import React, { useEffect, useState } from "react";
 import { getDataStokOpname } from "../../service/GetDataStokOpname";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import Navbar from "../../components/navbar";
 
 const Laporan = () => {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
     try {
-        // Dapatkan data dari API
-        const response = await getDataStokOpname();
-        
-        // Urutkan data berdasarkan nama barang (atau kolom yang sesuai)
-        const sortedData = response.data.sort((a, b) => {
-            const nameA = a.nama_brng.toLowerCase(); // Ubah ke huruf kecil untuk urutan yang konsisten
-            const nameB = b.nama_brng.toLowerCase();
-            if (nameA < nameB) {
-                return -1; // Jika nameA lebih kecil dari nameB
-            }
-            if (nameA > nameB) {
-                return 1; // Jika nameA lebih besar dari nameB
-            }
-            return 0; // Jika sama
-        });
+      // Dapatkan data dari API
+      const response = await getDataStokOpname();
 
-        // Set data yang sudah diurutkan
-        setData(sortedData);
+      // Urutkan data berdasarkan nama barang (atau kolom yang sesuai)
+      const sortedData = response.data.sort((a, b) => {
+        const nameA = a.nama_brng.toLowerCase(); // Ubah ke huruf kecil untuk urutan yang konsisten
+        const nameB = b.nama_brng.toLowerCase();
+        if (nameA < nameB) {
+          return -1; // Jika nameA lebih kecil dari nameB
+        }
+        if (nameA > nameB) {
+          return 1; // Jika nameA lebih besar dari nameB
+        }
+        return 0; // Jika sama
+      });
+
+      // Set data yang sudah diurutkan
+      setData(sortedData);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-};
-
+  };
 
   useEffect(() => {
     fetchData();
@@ -119,7 +119,6 @@ const Laporan = () => {
         // kuning
         fgColor: { argb: "FFFFFF00" },
       };
-
     });
 
     let totalPengeluaran = 0;
@@ -185,7 +184,11 @@ const Laporan = () => {
           bottom: { style: "thin" },
           right: { style: "thin" },
         };
-        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD9D9D9" } };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFD9D9D9" },
+        };
         cell.alignment = { horizontal: "center" };
       } else if (colNumber === 9) {
         cell.numFmt = '"Rp "#,##0.00'; // Format untuk total pengeluaran
@@ -194,10 +197,14 @@ const Laporan = () => {
           left: { style: "thin" },
           bottom: { style: "thin" },
           right: { style: "thin" },
-        }
+        };
         cell.alignment = { horizontal: "center" };
         cell.font = { bold: true };
-         cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFD9D9D9" } };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFD9D9D9" },
+        };
       }
     });
 
@@ -218,71 +225,106 @@ const Laporan = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Laporan Stok Opname</h1>
-      <button
-        onClick={exportToExcel}
-        className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg transition-all duration-300"
-      >
-        Export to Excel
-      </button>
-
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-center">Nama Barang</th>
-            <th className="py-3 px-6 text-center">Expire</th>
-            <th className="py-3 px-6 text-center">Kategori</th>
-            <th className="py-3 px-6 text-center">Satuan</th>
-            <th className="py-3 px-6 text-center">Harga Dasar</th>
-            <th className="py-3 px-6 text-center">Total Harga</th>
-            <th className="py-3 px-6 text-center">Stok</th>
-            <th className="py-3 px-6 text-center">Nama Suplier</th>
-            <th className="py-3 px-6 text-center">Total Pengeluaran</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-600 text-sm font-light">
-          {data.map((item, index) => (
-            <tr
-              key={index}
-              className="border-b border-gray-200 hover:bg-gray-100"
-            >
-              <td className="py-3 px-6 text-center">{item.nama_brng}</td>
-              <td className="py-3 px-6 text-center">
-                {new Date(item.expire).toLocaleDateString()}
-              </td>
-              <td className="py-3 px-6 text-center">{item.kode_kategori}</td>
-              <td className="py-3 px-6 text-center">{item.kode_sat}</td>
-              <td className="py-3 px-6 text-center">
-                {formatRupiah(parseInt(item.harga_dasar, 10))}
-              </td>
-              <td className="py-3 px-6 text-center">
-                {formatRupiah(item.stok * parseInt(item.harga_dasar, 10))}
-              </td>
-              <td className="py-3 px-6 text-center">{item.stok}</td>
-              <td className="py-3 px-6 text-center">{item.nama_suplier}</td>
-              <td className="py-3 px-6 text-center">
-                {formatRupiah(item.stok * parseInt(item.harga_dasar, 10))}
-              </td>
-            </tr>
-          ))}
-          <tr className="border-b border-gray-200">
-            <td className="py-3 px-6 text-center" colSpan={8}>
-              Total Pengeluaran
-            </td>
-            <td className="py-3 px-6 text-center">
-              {formatRupiah(
-                data.reduce(
-                  (acc, item) =>
-                    acc + item.stok * parseInt(item.harga_dasar, 10),
-                  0
-                )
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <>
+      <Navbar />
+      <div className="container mx-auto p-4 text-xs relative">
+        <h1 className="text-2xl font-bold mb-4">Laporan Stok Opname</h1>
+        <button
+          onClick={exportToExcel}
+          className="mt-4  bg-green-500 w-full hover:bg-green-600 text-white font-bold py-2 px-4 mb-4 rounded shadow-lg transition-all duration-300"
+        >
+          Export to Excel
+        </button>
+        <div className="overflow-x-auto relatitve ">
+          <table className="min-w-full  bg-white border border-gray-200 text-xs">
+            <thead>
+              <tr className="bg-gray-200 text-xs text-gray-600 uppercase  leading-normal border rounded-md border-black ">
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Nama Barang
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Expire
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Kategori
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Satuan
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Harga Dasar
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Total Harga
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Stok
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Nama Suplier
+                </th>
+                <th className="py-3 px-6 text-center border rounded-md border-black ">
+                  Total Pengeluaran
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {data.map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-b text-xs border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {item.nama_brng}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {new Date(item.expire).toLocaleDateString()}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {item.kode_kategori}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {item.kode_sat}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {formatRupiah(parseInt(item.harga_dasar, 10))}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {formatRupiah(item.stok * parseInt(item.harga_dasar, 10))}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {item.stok}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {item.nama_suplier}
+                  </td>
+                  <td className="py-3 border rounded-md border-black  px-6 text-center">
+                    {formatRupiah(item.stok * parseInt(item.harga_dasar, 10))}
+                  </td>
+                </tr>
+              ))}
+              <tr className="border-b border rounded-md border-black  ">
+                <td
+                  className="py-3 px-6 border rounded-md border-black  text-center"
+                  colSpan={8}
+                >
+                  Total Pengeluaran
+                </td>
+                <td className="py-3 px-6 text-center border rounded-md border-black ">
+                  {formatRupiah(
+                    data.reduce(
+                      (acc, item) =>
+                        acc + item.stok * parseInt(item.harga_dasar, 10),
+                      0
+                    )
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import { saveAs } from "file-saver"; // Library untuk menyimpan file
 import { useReactToPrint } from "react-to-print";
 import KOPLaporan from "./KOP_Laporan";
 import TTDLaporan from "./TTDLaporan";
+import Navbar from "../../components/navbar";
 
 const LaporanObat = () => {
   const [date, setDate] = useState(() => {
@@ -229,188 +230,194 @@ const LaporanObat = () => {
   }, 0);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Laporan Obat</h1>
+    <>
+      <Navbar />
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Laporan Obat</h1>
 
-      <div className="mb-4">
-        <label
-          htmlFor="date"
-          className="block text-sm font-medium text-gray-700"
+        <div className="mb-4">
+          <label
+            htmlFor="date"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Pilih Tanggal:
+          </label>
+          <input
+            type="month"
+            id="date"
+            max={formatDate(new Date())}
+            value={date}
+            onChange={handleDateChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="search"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Cari Nama Barang:
+          </label>
+          <input
+            type="text"
+            id="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Masukkan nama barang"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <button
+          onClick={exportToExcel}
+          className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
         >
-          Pilih Tanggal:
-        </label>
-        <input
-          type="month"
-          id="date"
-          max={formatDate(new Date())}
-          value={date}
-          onChange={handleDateChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label
-          htmlFor="search"
-          className="block text-sm font-medium text-gray-700"
+          Export to Excel
+        </button>
+        <button
+          onClick={() => {
+            setIsPrinting(true); // Set isPrinting true langsung
+            setTimeout(() => {
+              handlePrint(); // Eksekusi handlePrint setelah 1.5 detik
+            }, 1500); // 1.5 detik
+          }}
+          className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
         >
-          Cari Nama Barang:
-        </label>
-        <input
-          type="text"
-          id="search"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Masukkan nama barang"
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+          Cetak PDF
+        </button>
 
-      <button
-        onClick={exportToExcel}
-        className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
-      >
-        Export to Excel
-      </button>
-      <button
-        onClick={() => {
-          setIsPrinting(true); // Set isPrinting true langsung
-          setTimeout(() => {
-            handlePrint(); // Eksekusi handlePrint setelah 1.5 detik
-          }, 1500); // 1.5 detik
-        }}
-        className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
-      >
-        Cetak PDF
-      </button>
+        {error && <p className="text-red-500">{error}</p>}
 
-      {error && <p className="text-red-500">{error}</p>}
+        <div ref={componentRef}>
+          <div className="">
+            <KOPLaporan />
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white border border-gray-300 text-center text-xs">
+                <thead>
+                  <tr className="bg-gray-200 text-gray-700">
+                    <th className="py-2 print:py-2 px-4 border border-black w-12">
+                      No
+                    </th>
+                    <th className="py-2 print:py-2  px-4 border  border-black ">
+                      Nama Barang
+                    </th>
+                    <th className="py-2 print:py-2  px-4 border border-black print:w-20">
+                      Satuan
+                    </th>
+                    <th className="py-2 print:py-2 px-4 border border-black print:hidden">
+                      Stok Awal
+                    </th>
+                    <th className="py-2 print:py-2 px-4 border border-black print:w-20">
+                      Sisa Stok
+                    </th>
+                    <th className="py-2 print:py-2 px-4 border border-black print:w-20">
+                      Pengeluaran Bulan ini
+                    </th>
+                    <th className="py-2 print:py-2 px-4 border border-black print:w-20">
+                      Perencanaan 3 bulan
+                    </th>
+                    <th className="py-2 print:py-2  px-4 border border-black print:hidden">
+                      Expire
+                    </th>
 
-      <div ref={componentRef}>
-        <div>
-          <KOPLaporan />
-          <table className="min-w-full bg-white border border-gray-300 text-center text-xs">
-            <thead>
-              <tr className="bg-gray-200 text-gray-700">
-                <th className="py-2 print:py-2 px-4 border border-black w-12">
-                  No
-                </th>
-                <th className="py-2 print:py-2  px-4 border  border-black ">
-                  Nama Barang
-                </th>
-                <th className="py-2 print:py-2  px-4 border border-black print:w-20">
-                  Satuan
-                </th>
-                <th className="py-2 print:py-2 px-4 border border-black print:hidden">
-                  Stok Awal
-                </th>
-                <th className="py-2 print:py-2 px-4 border border-black print:w-20">
-                  Sisa Stok
-                </th>
-                <th className="py-2 print:py-2 px-4 border border-black print:w-20">
-                  Pengeluaran Bulan ini
-                </th>
-                <th className="py-2 print:py-2 px-4 border border-black print:w-20">
-                  Perencanaan 3 bulan
-                </th>
-                <th className="py-2 print:py-2  px-4 border border-black print:hidden">
-                  Expire
-                </th>
+                    <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
+                      Harga Dasar
+                    </th>
+                    <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
+                      Total Harga 3 bulan
+                    </th>
+                    <th className="py-2 print:py-2  px-4 border border-black  ">
+                      Keterangan
+                    </th>
+                    <th className="py-2 print:py-2 px-4 border border-black print:hidden">
+                      Nama Suplier
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.length > 0 ? (
+                    filteredData
+                      .filter((item) => !isPrinting || item.total_keluar > 0) // Hanya tampilkan jika total_keluar > 0 saat isPrinting true
+                      .map((item, index) => {
+                        const expireDate = item.expire
+                          ? new Date(item.expire)
+                          : null;
+                        const formattedExpireDate = expireDate
+                          ? expireDate.toLocaleDateString("id-ID")
+                          : "Tidak diketahui";
 
-                <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
-                  Harga Dasar
-                </th>
-                <th className="py-2 print:py-2  px-4 border border-black print:w-36 ">
-                  Total Harga 3 bulan
-                </th>
-                <th className="py-2 print:py-2  px-4 border border-black  ">
-                  Keterangan
-                </th>
-                <th className="py-2 print:py-2 px-4 border border-black print:hidden">
-                  Nama Suplier
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.length > 0 ? (
-                filteredData
-                  .filter((item) => !isPrinting || item.total_keluar > 0) // Hanya tampilkan jika total_keluar > 0 saat isPrinting true
-                  .map((item, index) => {
-                    const expireDate = item.expire
-                      ? new Date(item.expire)
-                      : null;
-                    const formattedExpireDate = expireDate
-                      ? expireDate.toLocaleDateString("id-ID")
-                      : "Tidak diketahui";
+                        return (
+                          <tr
+                            key={item.kode_brng}
+                            className="hover:bg-gray-100 text-center"
+                          >
+                            <td className="py-2 print:py-2 px-4 border border-black">
+                              {index + 1}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black text-start">
+                              {item.nama_barang}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black">
+                              {item.kode_sat}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
+                              {formatStok(item.stok_awal + item.total_keluar)}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black">
+                              {formatStok(item.stok_awal)}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black">
+                              {formatStok(item.total_keluar)}
+                            </td>
+                            <td className="py-2 print:py-2  px-4 border border-black">
+                              {formatStok(item.total_keluar * 3 * 1.2)}
+                            </td>
 
-                    return (
-                      <tr
-                        key={item.kode_brng}
-                        className="hover:bg-gray-100 text-center"
-                      >
-                        <td className="py-2 print:py-2 px-4 border border-black">
-                          {index + 1}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black text-start">
-                          {item.nama_barang}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black">
-                          {item.kode_sat}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
-                          {formatStok(item.stok_awal + item.total_keluar)}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black">
-                          {formatStok(item.stok_awal)}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black">
-                          {formatStok(item.total_keluar)}
-                        </td>
-                        <td className="py-2 print:py-2  px-4 border border-black">
-                          {formatStok(item.total_keluar * 3 * 1.2)}
-                        </td>
+                            <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
+                              {formattedExpireDate}
+                            </td>
 
-                        <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
-                          {formattedExpireDate}
-                        </td>
-
-                        <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                          {formatRupiah(item.harga_dasar)}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                          {formatRupiah(
-                            item.harga_dasar * (item.total_keluar * 3 * 1.2)
-                          )}
-                        </td>
-                        <td className="py-2 print:py-2 px-4 border border-black"></td>
-                        <td className="py-2 print:py-2 px-4 border border-black print:hidden">
-                          {item.nama_suplier}
-                        </td>
-                      </tr>
-                    );
-                  })
-              ) : (
-                <tr>
-                  <td colSpan="10" className="py-4">
-                    Tidak ada data yang sesuai.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <div className="mt-4 text-center  p-1 border border-black rounded-md">
-            <div className="flex flex-col">
-              <p className="font-bold">BIAYA PERENCANAAN 3 BULAN: </p>
-              <span className="text-red-500 font-bold text-md">
-                {formatRupiah(totalHargaTigaBulan)}
-              </span>
+                            <td className="py-2 print:py-2 px-4 border border-black print:w-20">
+                              {formatRupiah(item.harga_dasar)}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black print:w-20">
+                              {formatRupiah(
+                                item.harga_dasar * (item.total_keluar * 3 * 1.2)
+                              )}
+                            </td>
+                            <td className="py-2 print:py-2 px-4 border border-black"></td>
+                            <td className="py-2 print:py-2 px-4 border border-black print:hidden">
+                              {item.nama_suplier}
+                            </td>
+                          </tr>
+                        );
+                      })
+                  ) : (
+                    <tr>
+                      <td colSpan="10" className="py-4">
+                        Tidak ada data yang sesuai.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-          </div>
 
-          <TTDLaporan />
+            <div className="mt-4 text-center  p-1 border border-black rounded-md">
+              <div className="flex flex-col">
+                <p className="font-bold">BIAYA PERENCANAAN 3 BULAN: </p>
+                <span className="text-red-500 font-bold text-md">
+                  {formatRupiah(totalHargaTigaBulan)}
+                </span>
+              </div>
+            </div>
+
+            <TTDLaporan />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
