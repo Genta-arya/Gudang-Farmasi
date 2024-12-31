@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const axiosConfig = {
   // baseURL: 'http://localhost:3001', 
-  baseURL: 'http://192.168.0.152:3000',
+  // baseURL: 'https://server-gudang.vercel.app',
+  baseURL: 'http://192.168.0.106:3001',
   
   timeout: 50000, 
   headers: {

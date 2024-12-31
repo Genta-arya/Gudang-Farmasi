@@ -155,7 +155,7 @@ const Stok = () => {
                             : item.stok.toLocaleString()}
                         </td>
                         <td className="px-6 w-52 py-2 border border-black text-xs">
-                          Rp.   {item.harga_jual.toLocaleString()}
+                          Rp.   {item?.harga_jual.toLocaleString()}
                         </td>
                       </tr>
                     );
