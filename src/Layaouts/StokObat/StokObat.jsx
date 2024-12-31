@@ -15,7 +15,19 @@ const StokObat = () => {
         setLoading(true);
         const result = await getDataStokOpname();
         // setData(result.data.slice(0, 500));
-        setData(result.data);
+        // urutkan a-z
+         const sortedData = result.data.sort((a, b) => {
+           const nameA = a.nama_brng.toLowerCase(); // Ubah ke huruf kecil untuk urutan yang konsisten
+           const nameB = b.nama_brng.toLowerCase();
+           if (nameA < nameB) {
+             return -1; // Jika nameA lebih kecil dari nameB
+           }
+           if (nameA > nameB) {
+             return 1; // Jika nameA lebih besar dari nameB
+           }
+           return 0; // Jika sama
+         })
+        setData(sortedData);
       } catch (error) {
         console.error(error);
       } finally {
@@ -112,6 +124,9 @@ const StokObat = () => {
                     <th className="px-6  text-left  border border-black text-gray-600 text-xs  uppercase tracking-wider">
                       Stok
                     </th>
+                    <th className="px-6 text-left   border border-black text-gray-600 text-xs uppercase tracking-wider">
+                      Harga
+                    </th>
                    
                   </tr>
                 </thead>
@@ -154,6 +169,9 @@ const StokObat = () => {
                           {item.stok === 0
                             ? "0"
                             : item.stok.toLocaleString()}
+                        </td>
+                        <td className="px-6 border border-black whitespace-nowrap text-xs">
+                          Rp {item.harga_dasar.toLocaleString()}
                         </td>
              
                       </tr>
