@@ -4,7 +4,7 @@ import { getDataStokOpname } from "../../service/GetDataStokOpname";
 import LoadingGlobal from "../../components/Loading";
 import Navbar from "../../components/navbar";
 import { FaPrint } from "react-icons/fa";
-
+import ExcelJS from "exceljs";
 const StokObat = () => {
   const [originalData, setOriginalData] = useState([]); // Data asli
   const [data, setData] = useState([]); // Data yang ditampilkan
@@ -64,6 +64,53 @@ const StokObat = () => {
     `,
   });
 
+  const handleExportExcel = () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Laporan Opname");
+
+    // Header
+    worksheet.columns = [
+      { header: "No", key: "no", width: 5 },
+      { header: "Nama Barang", key: "nama_brng", width: 30 },
+      { header: "Expire", key: "expire", width: 15 },
+      { header: "PBF", key: "pbf", width: 20 },
+      { header: "Stok", key: "stok", width: 10 },
+      { header: "Harga Dasar", key: "harga_dasar", width: 15 },
+      { header: "Harga Total", key: "harga_total", width: 20 },
+    ];
+
+    // Data rows
+    data.forEach((item, index) => {
+      worksheet.addRow({
+        no: index + 1,
+        nama_brng: item.nama_brng,
+        expire: formatDate(item.expire),
+        pbf: item.nama_suplier,
+        stok: item.stok,
+        harga_dasar: item.harga_dasar,
+        harga_total: item.stok * item.harga_dasar,
+      });
+    });
+
+    // Style
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.eachRow({ includeEmpty: false }, (row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // Export
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      saveAs(new Blob([buffer]), "LaporanOpname.xlsx");
+    });
+  };
+
   const formatDate = (date) => {
     const d = new Date(date);
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
@@ -98,6 +145,12 @@ const StokObat = () => {
               <FaPrint />
               <p>Print</p>
             </div>
+          </button>
+          <button
+            className="bg-green-600 text-white font-bold py-2 px-4 rounded"
+            onClick={handleExportExcel}
+          >
+            Export to Excel
           </button>
         </div>
 
