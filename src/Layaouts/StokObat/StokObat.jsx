@@ -125,7 +125,10 @@ const StokObat = () => {
                       Stok
                     </th>
                     <th className="px-6 text-left   border border-black text-gray-600 text-xs uppercase tracking-wider">
-                      Harga
+                      Harga Dasar
+                    </th>
+                    <th className="px-6 text-left   border border-black text-gray-600 text-xs uppercase tracking-wider">
+                      Harga Total
                     </th>
                    
                   </tr>
@@ -172,6 +175,11 @@ const StokObat = () => {
                         </td>
                         <td className="px-6 border border-black whitespace-nowrap text-xs">
                           {item.harga_dasar.toLocaleString()}
+                        </td>
+                        <td className="px-6 border border-black whitespace-nowrap text-xs">
+                          {(
+                            item.stok * item.harga_dasar
+                          ).toLocaleString()}
                         </td>
              
                       </tr>
