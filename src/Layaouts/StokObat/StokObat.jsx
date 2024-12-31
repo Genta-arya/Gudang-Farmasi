@@ -171,7 +171,7 @@ const StokObat = () => {
                             : item.stok.toLocaleString()}
                         </td>
                         <td className="px-6 border border-black whitespace-nowrap text-xs">
-                          Rp {item.harga_dasar.toLocaleString()}
+                          {item.harga_dasar.toLocaleString()}
                         </td>
              
                       </tr>
