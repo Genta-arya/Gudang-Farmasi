@@ -74,14 +74,14 @@ const Laporan = () => {
         header: "Harga Dasar",
         key: "harga_dasar",
         width: 25,
-        // style: { numFmt: '"Rp "#,##0.00' },
+        style: { numFmt: '"Rp "#,##0.00' },
         alignment: { horizontal: "center" },
       },
       {
         header: "Total Harga",
         key: "total_harga",
         width: 25,
-        // style: { numFmt: '"Rp "#,##0.00' },
+        style: { numFmt: '"Rp "#,##0.00' },
         alignment: { horizontal: "center" },
       },
       {

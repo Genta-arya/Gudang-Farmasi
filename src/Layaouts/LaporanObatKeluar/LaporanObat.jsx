@@ -157,7 +157,7 @@ const LaporanObat = () => {
         header: "Harga Dasar",
         key: "harga_dasar",
         width: 20,
-        style: { numFmt: '"Rp "#,##0.00' },
+        style: { numFmt: "#,##0.00" },
         alignment: { horizontal: "center" },
       },
       {
@@ -188,7 +188,7 @@ const LaporanObat = () => {
           ? new Date(item.expire).toLocaleDateString("id-ID")
           : "Tidak diketahui",
         kode_satuan: item.kode_sat,
-        harga_dasar: formatRupiah(item.harga_dasar),
+        harga_dasar: item.harga_dasar,
         nama_suplier: item.nama_suplier,
       });
 
@@ -379,12 +379,26 @@ const LaporanObat = () => {
                             </td>
 
                             <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                              {formatRupiah(item.harga_dasar)}
+                              {/* {formatRupiah(item.harga_dasar)} */}
+                  {/* {item.harga_dasar.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    // hapus ,00
+                    minimumFractionDigits: 0,
+                  })} */}
+                  {item.harga_dasar.toLocaleString()}
                             </td>
                             <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                              {formatRupiah(
+                              {/* {formatRupiah(
                                 item.harga_dasar * (item.total_keluar * 3 * 1.2)
-                              )}
+                              )} */}
+                              {(
+                                item.harga_dasar * (item.total_keluar * 3 * 1.2)
+                              ).toLocaleString("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                              })}
                             </td>
                             <td className="py-2 print:py-2 px-4 border border-black"></td>
                             <td className="py-2 print:py-2 px-4 border border-black print:hidden">
