@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const axiosConfig = {
   // baseURL: 'http://localhost:3005', 
-  baseURL: 'http://192.168.0.123:3000',
+  baseURL: 'http://192.168.0.110:3000',
   
   timeout: 50000, 
   headers: {
