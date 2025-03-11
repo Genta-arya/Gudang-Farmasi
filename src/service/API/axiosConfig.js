@@ -7,7 +7,7 @@ const apiClient = axios.create({
   },
 });
 
-// Gunakan `baseURL` yang selalu diperbarui dari `localStorage`
+
 apiClient.interceptors.request.use((config) => {
   config.baseURL = `http://${localStorage.getItem("ip")}:3000`;
   return config;
