@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaServer } from "react-icons/fa";
-import { message } from "antd"; // Import Ant Design message
+
 
 const IPLocal = () => {
   const [publicIP, setPublicIP] = useState("Memuat...");
@@ -65,11 +65,11 @@ const IPLocal = () => {
       );
 
       if (response.status === 200) {
-        message.success("IP berhasil diperbarui!"); // Notifikasi sukses
+    
         window.location.reload();
       }
     } catch (error) {
-      message.error("Gagal memperbarui IP!"); // Notifikasi error
+     
       console.error("Error update IP:", error);
     } finally {
       setLoading(false); // Matikan loading setelah request selesai
