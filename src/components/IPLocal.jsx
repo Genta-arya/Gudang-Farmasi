@@ -59,16 +59,15 @@ const IPLocal = () => {
     });
   };
   useEffect(() => {
-
+    console.log("aasda");
     fetchLocalIPAddress()
-    .then((ips) => {
-      setLocalIP(ips[0]);
-      setInputLocal(ips[0]);
-    })
-    .catch((error) => {
-      console.error("Gagal mendapatkan IP lokal:", error);
-    });
-   
+      .then((ips) => {
+        setLocalIP(ips[0]);
+        setInputLocal(ips[0]);
+      })
+      .catch((error) => {
+        console.error("Gagal mendapatkan IP lokal:", error);
+      });
   }, []);
 
   // Handle update IP ke backend
@@ -114,10 +113,15 @@ const IPLocal = () => {
       )}
 
       {/* IP Lokal */}
-      <div className="flex items-center justify-start gap-4 mb-4">
-        <FaServer className="text-blue-500 text-xl" />
-        <p className="text-lg text-gray-600">{localIP || "Tidak ditemukan"}</p>
-      </div>
+
+      {localIP && (
+        <div className="flex items-center justify-start gap-4 mb-4">
+          <FaServer className="text-blue-500 text-xl" />
+          <p className="text-lg text-gray-600">
+            {localIP || "Tidak ditemukan"}
+          </p>
+        </div>
+      )}
 
       {/* Input IP Lokal dengan tombol Simpan */}
       <div className="mb-4">
