@@ -17,7 +17,7 @@ const IPLocal = () => {
       setPublicIP(response.data.data.ip);
       setInputPublic(response.data.data.ip); // Set input default dengan IP Publik
       setId(response.data.data.id);
-
+      setInputLocal(response.data.data.ip);
       localStorage.setItem("ip", response.data.data.ip);
     } catch (error) {
       console.error("Gagal mengambil IP Publik:", error);
@@ -63,7 +63,7 @@ const IPLocal = () => {
     fetchLocalIPAddress()
       .then((ips) => {
         setLocalIP(ips[0]);
-        setInputLocal(ips[0]);
+        // setInputLocal(ips[0]);
       })
       .catch((error) => {
         console.error("Gagal mendapatkan IP lokal:", error);

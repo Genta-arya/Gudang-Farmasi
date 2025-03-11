@@ -180,10 +180,11 @@ const LaporanObat = () => {
       const row = worksheet.addRow({
         no: index + 1,
         nama_barang: item.nama_barang,
-        stok_awal: formatStok(item.stok_awal + item.total_keluar),
-        sisa_stok: formatStok(item.sisa_stok),
-        total_keluar: formatStok(item.total_keluar),
-        perencanaan: formatStok(item.total_keluar * 3 * 1.2),
+        
+        stok_awal: item.stok_awal + item.total_keluar,
+        sisa_stok: item.stok_awal,
+        total_keluar: item.total_keluar,
+        perencanaan: item.total_keluar * 3 * 1.2,
         expire: item.expire
           ? new Date(item.expire).toLocaleDateString("id-ID")
           : "Tidak diketahui",
