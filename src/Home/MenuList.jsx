@@ -32,7 +32,7 @@ const MenuList = () => {
   ];
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className=" mt-12 flex items-center justify-center">
       <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-[90%]">
         <ul className="grid grid-cols-2 gap-6 md:grid-cols-2">
           {menu.map((item, index) => (

@@ -8,12 +8,14 @@ import Stok from "./DaftarBarang/DaftarBarang";
 import Laporan from "./Layaouts/LaporanSO/Laporan";
 import LaporanObat from "./Layaouts/LaporanObatKeluar/LaporanObat";
 
+
 const App = () => {
   return (
     <Routes>
       <Route path="/stok" element={<StokObat />} />
       <Route path="/barang" element={<Stok />} />
       <Route path="/" element={<LayoutHome />} />
+
       <Route path="/detail/:id/:dari" element={<DetailAmprahan />} />
       <Route path="/laporan/stokopname" element={<Laporan />} />
       <Route path="/obatkeluar" element={<LaporanObat />} />

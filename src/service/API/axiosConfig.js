@@ -1,17 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-
-const axiosConfig = {
-  // baseURL: 'http://localhost:3005', 
-  baseURL: 'http://192.168.0.106:3000',
-  
-  timeout: 50000, 
+const apiClient = axios.create({
+  timeout: 50000,
   headers: {
-    'Content-Type': 'application/json'
-  }
-};
+    "Content-Type": "application/json",
+  },
+});
 
-
-const apiClient = axios.create(axiosConfig);
+// Gunakan `baseURL` yang selalu diperbarui dari `localStorage`
+apiClient.interceptors.request.use((config) => {
+  config.baseURL = `http://${localStorage.getItem("ip")}:3000`;
+  return config;
+});
 
 export default apiClient;
