@@ -59,16 +59,16 @@ const IPLocal = () => {
     });
   };
   useEffect(() => {
+
     fetchLocalIPAddress()
-      .then((ips) => {
-        if (Array.isArray(ips) && ips.length > 0 && ips[0]) {
-          setLocalIP(ips[0]);
-          setInputLocal(ips[0]);
-        } else {
-          console.warn("IP lokal tidak ditemukan!");
-        }
-      })
-      .catch((error) => console.error("Gagal mengambil IP lokal:", error));
+    .then((ips) => {
+      setLocalIP(ips[0]);
+      setInputLocal(ips[0]);
+    })
+    .catch((error) => {
+      console.error("Gagal mendapatkan IP lokal:", error);
+    });
+   
   }, []);
 
   // Handle update IP ke backend
