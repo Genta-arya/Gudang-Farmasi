@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaServer } from "react-icons/fa";
 
-
 const IPLocal = () => {
   const [publicIP, setPublicIP] = useState("Memuat...");
   const [localIP, setLocalIP] = useState("");
@@ -32,25 +31,44 @@ const IPLocal = () => {
   }, []);
 
   // Ambil IP Lokal menggunakan WebRTC
-  useEffect(() => {
-    const getLocalIP = async () => {
-      const pc = new RTCPeerConnection({ iceServers: [] });
-      pc.createDataChannel("");
-      pc.onicecandidate = (event) => {
+  const fetchLocalIPAddress = () => {
+    return new Promise((resolve, reject) => {
+      const localIPs = new Set();
+      const rtcPeerConnection = new RTCPeerConnection({ iceServers: [] });
+
+      rtcPeerConnection.onicecandidate = (event) => {
         if (event.candidate) {
-          const ipRegex = /([0-9]{1,3}\.){3}[0-9]{1,3}/;
-          const ipMatch = event.candidate.candidate.match(ipRegex);
+          const regex = /(?:\d{1,3}\.){3}\d{1,3}/;
+          const ipMatch = event.candidate.candidate.match(regex);
           if (ipMatch) {
-            setLocalIP(ipMatch[0]);
-            setInputLocal(ipMatch[0]); // Set input default dengan IP Lokal
-            pc.close();
+            localIPs.add(ipMatch[0]);
           }
+        } else {
+          resolve(Array.from(localIPs));
+          rtcPeerConnection.close();
         }
       };
-      await pc.createOffer().then((offer) => pc.setLocalDescription(offer));
-    };
 
-    getLocalIP();
+      console.log(localIPs);
+
+      rtcPeerConnection.createDataChannel("");
+      rtcPeerConnection
+        .createOffer()
+        .then((offer) => rtcPeerConnection.setLocalDescription(offer))
+        .catch((error) => reject(error));
+    });
+  };
+  useEffect(() => {
+    fetchLocalIPAddress()
+      .then((ips) => {
+        if (Array.isArray(ips) && ips.length > 0 && ips[0]) {
+          setLocalIP(ips[0]);
+          setInputLocal(ips[0]);
+        } else {
+          console.warn("IP lokal tidak ditemukan!");
+        }
+      })
+      .catch((error) => console.error("Gagal mengambil IP lokal:", error));
   }, []);
 
   // Handle update IP ke backend
@@ -65,11 +83,9 @@ const IPLocal = () => {
       );
 
       if (response.status === 200) {
-    
         window.location.reload();
       }
     } catch (error) {
-     
       console.error("Error update IP:", error);
     } finally {
       setLoading(false); // Matikan loading setelah request selesai
