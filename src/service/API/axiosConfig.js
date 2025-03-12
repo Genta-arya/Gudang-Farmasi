@@ -9,7 +9,7 @@ const apiClient = axios.create({
 
 
 apiClient.interceptors.request.use((config) => {
-  config.baseURL = `http://${localStorage.getItem("ip")}:3004`;
+  config.baseURL = `http://${localStorage.getItem("ip")}:3000`;
   return config;
 });
 
