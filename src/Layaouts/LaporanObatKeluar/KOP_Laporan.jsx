@@ -2,13 +2,15 @@ import React from "react";
 import icon from "../../assets/icon.png";
 import icon_rs from "../../assets/icon_rs.png";
 
-const KOPLaporan = () => {
-  const formatTanggal = new Date().toLocaleDateString("id-ID", {
+const KOPLaporan = ( { tanggal}) => {
+
+  const dateObj = new Date(tanggal);
+  dateObj.setDate(1); // Pastikan tanggal selalu 1
+  const formatTanggal = dateObj.toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-
   const romawiBulan = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 
   // Mengambil bulan saat ini (dimulai dari 0, jadi tambahkan 1)

@@ -292,7 +292,7 @@ const LaporanObat = () => {
 
         <div ref={componentRef}>
           <div className="">
-            <KOPLaporan />
+            <KOPLaporan tanggal={date} />
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-300 text-center text-xs">
                 <thead>
