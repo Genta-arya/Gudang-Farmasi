@@ -5,12 +5,7 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-});
-
-
-apiClient.interceptors.request.use((config) => {
-  config.baseURL = `http://${localStorage.getItem("ip")}:3000`;
-  return config;
+  baseURL: `http://30.30.30.190/api/gudang-server/service`,
 });
 
 export default apiClient;

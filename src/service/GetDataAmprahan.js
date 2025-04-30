@@ -2,7 +2,7 @@ import apiClient from "./API/axiosConfig";
 
 export const getDataAmprahan = async (date) => {
   try {
-    const response = await apiClient.post(`/permintaan`, { date });
+    const response = await apiClient.post(`/permintaan.php`, { date });
     return response.data;
   } catch (error) {
     throw error;
