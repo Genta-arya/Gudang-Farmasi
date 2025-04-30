@@ -9,6 +9,7 @@ import TTDLaporan from "./TTDLaporan";
 import Navbar from "../../components/navbar";
 import { FaFileExcel, FaFilePdf } from "react-icons/fa";
 import Select from "react-select";
+import ScrollToTop from "../../components/ScrollToTop";
 
 const LaporanObat = () => {
   const [date, setDate] = useState(() => {
@@ -59,8 +60,7 @@ const LaporanObat = () => {
 
   useEffect(() => {
     fetchData();
-  }, [date]); 
-  
+  }, [date]);
 
   const handleDateChange = (event) => {
     setDate(event.target.value);
@@ -271,14 +271,14 @@ const LaporanObat = () => {
             htmlFor="search"
             className="block text-sm font-medium text-gray-700"
           >
-            Cari Nama Barang:
+            Cari Nama Obat:
           </label>
           <input
             type="text"
             id="search"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Masukkan nama barang"
+            placeholder="Masukkan nama obat..."
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -395,9 +395,13 @@ const LaporanObat = () => {
                             <td className="py-2 print:py-2 px-4 border border-black">
                               {item.kode_sat}
                             </td>
-                            <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
-                              {formatStok(item.stok_awal + item.total_keluar)}
+                            <td className="py-2 print:py-2 px-4 border border-black print:hidden">
+                              {formatStok(
+                                Number(item.stok_awal) +
+                                  Number(item.total_keluar)
+                              )}
                             </td>
+
                             <td className="py-2 print:py-2 px-4 border border-black">
                               {formatStok(item.stok_awal)}
                             </td>
@@ -458,6 +462,7 @@ const LaporanObat = () => {
           </div>
         </div>
       </div>
+      <ScrollToTop />
     </>
   );
 };

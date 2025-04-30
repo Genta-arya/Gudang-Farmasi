@@ -22,14 +22,28 @@ const Stok = () => {
           stok: Number(item.stok),
           harga_jual: Number(item.harga_jual),
         }));
-        setData(formattedData);
-        setFilteredData(formattedData);
+    
+        // Mengurutkan data berdasarkan 'nama_brng'
+        const sortedData = formattedData.sort((a, b) => {
+          if (a.nama_brng.toLowerCase() < b.nama_brng.toLowerCase()) {
+            return -1;
+          }
+          if (a.nama_brng.toLowerCase() > b.nama_brng.toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
+    
+        setData(sortedData);
+        setFilteredData(sortedData);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
+    
+    
 
     fetchData();
   }, []);
