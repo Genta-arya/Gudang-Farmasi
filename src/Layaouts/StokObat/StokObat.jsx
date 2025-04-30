@@ -1,14 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
+
 import { getDataStokOpname } from "../../service/GetDataStokOpname";
 import LoadingGlobal from "../../components/Loading";
 import Navbar from "../../components/navbar";
-import { FaPrint } from "react-icons/fa";
-import ExcelJS from "exceljs";
+import { FaFileExcel, FaPrint } from "react-icons/fa";
+import { formatDate, handleExportExcel } from "../../utils/utils";
+import { useReactToPrint } from "react-to-print";
+import KOPLaporan from "../LaporanObatKeluar/KOP_Laporan";
+import ScrollToTop from "../../components/ScrollToTop";
+
 const StokObat = () => {
   const [originalData, setOriginalData] = useState([]); // Data asli
   const [data, setData] = useState([]); // Data yang ditampilkan
   const [loading, setLoading] = useState(true);
+  const [isFiltered, setIsFiltered] = useState(false); // status tombol filter
+
   const componentRef = useRef();
 
   useEffect(() => {
@@ -37,11 +43,12 @@ const StokObat = () => {
     // Filter barang dengan stok > 0
     const filteredData = originalData.filter((item) => item.stok > 0);
     setData(filteredData);
+    setIsFiltered(true);
   };
 
   const resetFilter = () => {
-    // Kembalikan data ke aslinya
     setData(originalData);
+    setIsFiltered(false);
   };
 
   const handlePrint = useReactToPrint({
@@ -64,58 +71,6 @@ const StokObat = () => {
     `,
   });
 
-  const handleExportExcel = () => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Laporan Opname");
-
-    // Header
-    worksheet.columns = [
-      { header: "No", key: "no", width: 5 },
-      { header: "Nama Barang", key: "nama_brng", width: 30 },
-      { header: "Expire", key: "expire", width: 15 },
-      { header: "PBF", key: "pbf", width: 20 },
-      { header: "Stok", key: "stok", width: 10 },
-      { header: "Harga Dasar", key: "harga_dasar", width: 15 },
-      { header: "Harga Total", key: "harga_total", width: 20 },
-    ];
-
-    // Data rows
-    data.forEach((item, index) => {
-      worksheet.addRow({
-        no: index + 1,
-        nama_brng: item.nama_brng,
-        expire: formatDate(item.expire),
-        pbf: item.nama_suplier,
-        stok: item.stok,
-        harga_dasar: item.harga_dasar,
-        harga_total: item.stok * item.harga_dasar,
-      });
-    });
-
-    // Style
-    worksheet.getRow(1).font = { bold: true };
-    worksheet.eachRow({ includeEmpty: false }, (row) => {
-      row.eachCell((cell) => {
-        cell.border = {
-          top: { style: "thin" },
-          left: { style: "thin" },
-          bottom: { style: "thin" },
-          right: { style: "thin" },
-        };
-      });
-    });
-
-    // Export
-    workbook.xlsx.writeBuffer().then((buffer) => {
-      saveAs(new Blob([buffer]), "LaporanOpname.xlsx");
-    });
-  };
-
-  const formatDate = (date) => {
-    const d = new Date(date);
-    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-  };
-
   if (loading) {
     return <LoadingGlobal />;
   }
@@ -123,22 +78,28 @@ const StokObat = () => {
   return (
     <>
       <Navbar />
-      <div className="p-6 w-full mx-auto">
-        <div className="flex space-x-4 mb-4">
+
+      <div className="pt-6 w-full mx-auto container">
+        <div className="flex mt-8 flex-row gap-4 items-center  mb-4">
+          <div className="mb-4 w-full">
+            <select
+              className="border border-gray-300 rounded px-4 py-2"
+              value={isFiltered ? "tersedia" : "semua"}
+              onChange={(e) => {
+                if (e.target.value === "tersedia") {
+                  filterData();
+                } else {
+                  resetFilter();
+                }
+              }}
+            >
+              <option value="semua">Tampilkan Semua</option>
+              <option value="tersedia">Stok Tersedia Saja</option>
+            </select>
+          </div>
+
           <button
-            className="bg-gray-800 text-white font-bold py-2 px-4 rounded"
-            onClick={filterData}
-          >
-            Filter Stok Tersedia
-          </button>
-          <button
-            className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
-            onClick={resetFilter}
-          >
-            Reset Filter
-          </button>
-          <button
-            className="bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            className="border border-gray-300 duration-300 ease-in-out transition-all  font-bold w-72 py-2 px-4 rounded"
             onClick={handlePrint}
           >
             <div className="flex justify-center gap-2 items-center">
@@ -147,20 +108,27 @@ const StokObat = () => {
             </div>
           </button>
           <button
-            className="bg-green-600 text-white font-bold py-2 px-4 rounded"
-            onClick={handleExportExcel}
+            className="border border-gray-300 duration-300 ease-in-out transition-all font-bold w-72 py-2 px-4 rounded"
+            onClick={() => handleExportExcel(data)}
           >
-            Export to Excel
+           <div className="flex justify-center gap-2 items-center">
+              <FaFileExcel />
+              <p>Export Excel</p>
+            </div>
           </button>
         </div>
 
         {data.length > 0 ? (
-          <div className="overflow-x-auto" ref={componentRef}>
-            <div className="flex justify-center">
-              <table className="bg-white border border-gray-200 rounded-lg shadow-md mt-8 print:mt-4">
+          <div className="overflow-x-auto pb-4" ref={componentRef}>
+            <KOPLaporan
+              title={"Laporan Stok Opname \n Gudang Farmasi"}
+              tanggal={new Date()}
+            />
+            <div className="flex justify-center ">
+              <table className="bg-white border w-full border-gray-200 rounded-lg shadow-md mt-8 print:mt-4">
                 <thead className="font-bold">
                   <tr className="bg-gray-100 border-b text-xs">
-                    <th className="px-6 text-center border border-black">No</th>
+                    <th className="px-1 text-center border border-black">No</th>
                     <th className="px-6 text-left border border-black">
                       Nama Barang
                     </th>
@@ -187,7 +155,7 @@ const StokObat = () => {
                           isExpired ? "bg-yellow-200 text-black" : "bg-gray-100"
                         } ${item.stok === 0 ? "bg-red-400 text-red-700" : ""}`}
                       >
-                        <td className="px-6 text-center border border-black">
+                        <td className="px-1 text-center border border-black">
                           {index + 1}
                         </td>
                         <td className="px-6 w-64 te border border-black">
@@ -200,7 +168,7 @@ const StokObat = () => {
                           {item.nama_suplier}
                         </td>
                         <td className="px-6 border border-black">
-                          {item.stok.toLocaleString()}
+                          {Number(item.stok).toLocaleString("id-ID")}
                         </td>
                         <td className="px-6 border border-black">
                           {item.harga_dasar.toLocaleString()}
@@ -219,6 +187,7 @@ const StokObat = () => {
           <p className="text-gray-600">No data available</p>
         )}
       </div>
+      <ScrollToTop />
     </>
   );
 };

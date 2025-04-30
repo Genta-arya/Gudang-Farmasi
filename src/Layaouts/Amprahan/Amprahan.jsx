@@ -49,21 +49,16 @@ const Amprahan = () => {
   return (
     <>
       <Navbar />
-      <div className="p-6 bg-gray-100 min-h-screen">
-        <div className="mb-6 flex items-center gap-2 justify-start">
-          <label
-            htmlFor="date"
-            className="block text-sm font-medium text-gray-700 "
-          >
-            Tanggal
-          </label>
+      <div className="py-6  container mx-auto">
+        <div className="mb-6 flex items-center gap-2 w-f justify-start">
+          
           <input
             id="date"
             type="date"
             max={format(new Date(), "yyyy-MM-dd")}
             value={selectedDate}
             onChange={handleDateChange}
-            className="p-2 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="p-2 border w-full border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -121,7 +116,7 @@ const Amprahan = () => {
                         onClick={() =>
                           goToDetail(item.no_permintaan, item.dari, item.nama)
                         }
-                        className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
                       >
                         Detail
                       </button>
@@ -132,7 +127,7 @@ const Amprahan = () => {
             </table>
           ) : (
             <p className="text-gray-500 flex justify-center">
-              Belum ada amprahan hari ini yaa.
+              Amprahan atau permintaan tidak ditemukan
             </p>
           )}
         </div>

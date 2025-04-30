@@ -9,6 +9,7 @@ import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale untuk Bahasa Indonesia
 import LoadingGlobal from "../../components/Loading";
 import Navbar from "../../components/navbar";
+import { FaPrint } from "react-icons/fa";
 
 const DetailAmprahan = () => {
   const { id } = useParams();
@@ -103,19 +104,23 @@ const DetailAmprahan = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center md:p-20">
-        <div className=" w-full max-w-[220mm] bg-gray-100  p-6 shadow-lg border border-gray-500">
+      <div className="flex justify-center container mx-auto  pt-20">
+        <div className=" w-full  bg-gray-100  p-6 shadow-lg border border-gray-500">
           <button
             onClick={handlePrint}
-            className=" px-4 py-2 w-full mb-8  bg-gray-800 text-white rounded hover:bg-gray-900"
+            className=" px-4 py-2 w-full mb-8  bg-red-500 text-white rounded hover:bg-red-600"
           >
-            Print
+            <div className="flex items-center justify-center gap-4">
+              <FaPrint />
+              <p>Print</p>
+            </div>
+          
           </button>
 
           {data.length > 0 ? (
             <div
               ref={componentRef}
-              className="overflow-x-auto  flex justify-center bg-white "
+              className="overflow-x-auto  flex justify-center bg-white print:pt-0 pt-12 print:pb-0 pb-12 "
             >
               <div className="w-[90%] ">
                 <KOP />
@@ -131,7 +136,7 @@ const DetailAmprahan = () => {
                   </h2>
                 </div>
                 <Header data={data[0]} />
-                <table className="min-w-full divide-y  divide-gray-200 border border-black ">
+                <table className="min-w-full divide-y   divide-gray-200 border border-black ">
                   <thead className="bg-gray-50 ">
                     <tr className=" text-center ">
                       <th className="w-20 py-2   text-xs border border-black font-bold text-black uppercase tracking-wider">

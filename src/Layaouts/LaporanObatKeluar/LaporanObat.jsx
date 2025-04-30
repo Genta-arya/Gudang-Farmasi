@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getDataLaporan } from "../../service/GetDataLaporan";
 import LoadingGlobal from "../../components/Loading";
-import ExcelJS from "exceljs"; // Library untuk export Excel
-import { saveAs } from "file-saver"; // Library untuk menyimpan file
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import { useReactToPrint } from "react-to-print";
 import KOPLaporan from "./KOP_Laporan";
 import TTDLaporan from "./TTDLaporan";
 import Navbar from "../../components/navbar";
+import { FaFileExcel, FaFilePdf } from "react-icons/fa";
+import Select from "react-select";
 
 const LaporanObat = () => {
   const [date, setDate] = useState(() => {
     const today = new Date();
-    return today.toISOString().slice(0, 7); // Mengambil bagian 'YYYY-MM'
+    return today.toISOString().slice(0, 7);
   });
   const [isPrinting, setIsPrinting] = useState(false);
-
+  const [excludedItems, setExcludedItems] = useState([]);
+  const [obatOptions, setObatOptions] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,15 +29,26 @@ const LaporanObat = () => {
     try {
       const response = await getDataLaporan({ date });
 
-      const sortedData = response.data.sort((a, b) => {
+      let sortedData = response.data.sort((a, b) => {
         const nameA = a.nama_barang.toLowerCase();
         const nameB = b.nama_barang.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
       });
 
+      // Exclude items based on excludedItems state
+      if (excludedItems.length > 0) {
+        sortedData = sortedData.filter(
+          (item) => !excludedItems.includes(item.nama_barang)
+        );
+      }
+
       setData(sortedData);
+      setObatOptions(
+        sortedData.map((item) => ({
+          value: item.nama_barang,
+          label: item.nama_barang,
+        }))
+      );
     } catch (error) {
       console.error(error);
       setError("Error fetching data");
@@ -45,7 +59,8 @@ const LaporanObat = () => {
 
   useEffect(() => {
     fetchData();
-  }, [date]);
+  }, [date]); 
+  
 
   const handleDateChange = (event) => {
     setDate(event.target.value);
@@ -180,7 +195,7 @@ const LaporanObat = () => {
       const row = worksheet.addRow({
         no: index + 1,
         nama_barang: item.nama_barang,
-        
+
         stok_awal: item.stok_awal + item.total_keluar,
         sisa_stok: item.stok_awal,
         total_keluar: item.total_keluar,
@@ -220,10 +235,10 @@ const LaporanObat = () => {
     saveAs(blob, `Laporan_Obat_${date}.xlsx`);
   };
 
-  // if (loading) return <LoadingGlobal />;
+  if (loading) return <LoadingGlobal />;
 
-  const filteredData = data.filter((item) =>
-    item.nama_barang.toLowerCase().includes(searchTerm)
+  const filteredData = data.filter(
+    (item) => !excludedItems.includes(item.nama_barang)
   );
 
   const totalHargaTigaBulan = filteredData.reduce((total, item) => {
@@ -234,8 +249,6 @@ const LaporanObat = () => {
     <>
       <Navbar />
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Laporan Obat</h1>
-
         <div className="mb-4">
           <label
             htmlFor="date"
@@ -270,11 +283,28 @@ const LaporanObat = () => {
           />
         </div>
 
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Kecualikan Nama Obat:
+          </label>
+          <Select
+            isMulti
+            options={obatOptions}
+            onChange={(selected) =>
+              setExcludedItems(selected.map((s) => s.value))
+            }
+            placeholder="Pilih obat yang ingin disembunyikan..."
+          />
+        </div>
+
         <button
           onClick={exportToExcel}
-          className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
+          className="mb-4 text-black w-full hover:opacity-90 border rounded-md font-bold py-2 px-4 border-gray-300 hover:scale-95 duration-300 ease-out "
         >
-          Export to Excel
+          <div className="flex items-center justify-center gap-2">
+            <FaFileExcel size={20} className="text-green-800" />
+            <p>Export ke Excel</p>
+          </div>
         </button>
         <button
           onClick={() => {
@@ -283,9 +313,12 @@ const LaporanObat = () => {
               handlePrint(); // Eksekusi handlePrint setelah 1.5 detik
             }, 1500); // 1.5 detik
           }}
-          className="mb-4 bg-gray-800 w-full hover:opacity-90 text-white font-bold py-2 px-4 rounded"
+          className=" text-black w-full mb-12 hover:opacity-90 border rounded-md font-bold py-2 px-4 border-gray-300 hover:scale-95 duration-300 ease-out"
         >
-          Cetak PDF
+          <div className="flex items-center justify-center gap-2">
+            <FaFilePdf size={20} className="text-red-500" />
+            <p>Export ke PDF</p>
+          </div>
         </button>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -372,7 +405,9 @@ const LaporanObat = () => {
                               {formatStok(item.total_keluar)}
                             </td>
                             <td className="py-2 print:py-2  px-4 border border-black">
-                              {formatStok(item.total_keluar * 3 * 1.2)}
+                              {formatStok(
+                                item.total_keluar * 3 * 1.2 - item.stok_awal
+                              )}
                             </td>
 
                             <td className="py-2 print:py-2 px-4 border border-black print:hidden ">
@@ -380,21 +415,12 @@ const LaporanObat = () => {
                             </td>
 
                             <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                              {/* {formatRupiah(item.harga_dasar)} */}
-                  {/* {item.harga_dasar.toLocaleString("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    // hapus ,00
-                    minimumFractionDigits: 0,
-                  })} */}
-                  {item.harga_dasar.toLocaleString()}
+                              {item.harga_dasar.toLocaleString()}
                             </td>
                             <td className="py-2 print:py-2 px-4 border border-black print:w-20">
-                              {/* {formatRupiah(
-                                item.harga_dasar * (item.total_keluar * 3 * 1.2)
-                              )} */}
                               {(
-                                item.harga_dasar * (item.total_keluar * 3 * 1.2)
+                                item.harga_dasar *
+                                (item.total_keluar * 3 * 1.2)
                               ).toLocaleString("id-ID", {
                                 style: "currency",
                                 currency: "IDR",
